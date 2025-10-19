@@ -28,18 +28,11 @@ const initModels = (sequelize) => {
         expiresAt: { type: DataTypes.DATE, allowNull: false },
     }, { timestamps: false });
 
-    const Database = sequelize.define('Database', {
-        name: { type: DataTypes.STRING, allowNull: false },
-    }, { timestamps: true });
-
     // Associations
     User.hasMany(RefreshToken, { foreignKey: 'userId', as: 'refreshTokens' });
     RefreshToken.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
-    User.hasMany(Database, { foreignKey: 'userId', as: 'databases' });
-    Database.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-
-    return { User, RefreshToken, Otp, Database };
+    return { User, RefreshToken, Otp };
 };
 
 let models = null;
