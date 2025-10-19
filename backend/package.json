@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Thangnguyen0307/RagDB-BE.git"
+    "url": "git+https://github.com/andz1308/DAChuyenNganh.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Thangnguyen0307/RagDB-BE/issues"
+    "url": "https://github.com/andz1308/DAChuyenNganh/issues"
   },
-  "homepage": "https://github.com/Thangnguyen0307/RagDB-BE#readme",
+  "homepage": "https://github.com/andz1308/DAChuyenNganh#readme",
   "dependencies": {
     "@types/bcrypt": "^6.0.0",
     "bcrypt": "^6.0.0",
@@ -31,7 +31,9 @@
     "joi": "^18.0.1",
     "joi-to-swagger": "^6.2.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.18.1",
+  "mysql2": "^3.3.0",
+  "sequelize": "^6.34.0",
+  "sequelize-cli": "^6.6.0",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.6",
     "socket.io": "^4.8.1",

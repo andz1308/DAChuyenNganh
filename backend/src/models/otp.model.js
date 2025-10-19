@@ -1,12 +1,5 @@
-import mongoose from 'mongoose';
+import { getModels } from './index.js';
 
-const otpSchema = new mongoose.Schema({
-    email: { type: String, required: true },
-    otp: { type: String, required: true },
-    expiresAt: { type: Date, required: true },
-});
+const { Otp } = getModels();
 
-// TTL index để tự động xoá OTP hết hạn
-otpSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
-
-export const OtpModel = mongoose.model('Otp', otpSchema);
+export { Otp as OtpModel };

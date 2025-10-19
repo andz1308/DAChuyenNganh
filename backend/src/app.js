@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { env } from './config/environment.js';
-import { connectToMongo } from './config/mongodb.js';
+import { connectToMysql } from './config/mysql.js';
+import { initModels } from './models/index.js';
 import swaggerDocument from './swagger/index.js';
 import swaggerUi from 'swagger-ui-express';
 import { seedAdminUser } from './seeds/seedAdmin.js';
@@ -38,13 +39,24 @@ const server = http.createServer(app);
 
 initSocket(server);
 
-server.listen(env.PORT, () => {
-    console.log(`🚀 Server is running on port: ${env.PORT}`);
-});
+const start = async () => {
+    await connectToMysql();
+    // initialize models and sync (non destructive)
+    const sequelize = await import('./config/mysql.js').then(m => m.getSequelize());
+    if (sequelize) {
+        initModels(sequelize);
+        await sequelize.sync();
+    }
 
+    seedAdminUser();
 
-seedAdminUser();
-connectToMongo();
+    server.listen(env.PORT, () => {
+        console.log(`🚀 Server is running on port: ${env.PORT}`);
+    });
+};
+
+start();
+
 app.use('/api-docs/', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
 
 app.use('/api', rootRouter);

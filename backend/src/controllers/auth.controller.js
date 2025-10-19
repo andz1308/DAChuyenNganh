@@ -62,7 +62,7 @@ const updatePassword = async (req, res) => {
         // Lấy currentPassword và newPassword từ body
         const { currentPassword, newPassword } = req.body;
         // Lấy userId từ payload (nếu có) hoặc từ req.user (nếu có middleware xác thực)
-        const userId = req.payload?.userId || req.user?._id; 
+    const userId = req.payload?.userId || req.user?.id; 
 
         if (!userId) {
             return res.status(401).json({ message: "Không xác định được người dùng" });

@@ -1,4 +1,4 @@
-import { RefreshToken } from "../models/refreshToken.model.js";
+import { getModels } from '../models/index.js';
 import { jwtUtils } from "../utils/jwt.util.js";
 import { sha256 } from "../utils/crypto.util.js"; // sha256 helper
 
@@ -12,8 +12,9 @@ export const refreshTokenService = {
         const tokenHash = sha256(refreshToken);
 
         // Lưu vào DB
+        const { RefreshToken } = getModels();
         await RefreshToken.create({
-            user: user._id,
+            userId: user.id || user._id,
             tokenHash,
             expiresAt: new Date(decoded.exp * 1000), // exp trong JWT là seconds
             createdByIp,
@@ -30,11 +31,12 @@ export const refreshTokenService = {
         const tokenHash = sha256(refreshToken);
 
         // Tìm trong DB
-        const stored = await RefreshToken.findOne({
+        const { RefreshToken } = getModels();
+        const stored = await RefreshToken.findOne({ where: {
             tokenHash,
             revokedAt: null,
-            expiresAt: { $gt: new Date() },
-        });
+            expiresAt: { [Symbol.for('gt')] : new Date() }
+        }});
 
         // Nếu không tìm thấy hoặc đã bị thu hồi
         if (!stored) {
@@ -47,12 +49,13 @@ export const refreshTokenService = {
 
     async rotate(oldRefreshToken, user, createdByIp, device) {
         // Tìm token cũ trong DB
+        const { RefreshToken } = getModels();
         const oldHash = sha256(oldRefreshToken);
-        const oldTokenDoc = await RefreshToken.findOne({
-            user: user._id,
+        const oldTokenDoc = await RefreshToken.findOne({ where: {
+            userId: user.id || user._id,
             tokenHash: oldHash,
             revokedAt: null,
-        });
+        }});
 
         // Nếu không tìm thấy hoặc đã bị thu hồi
         if (!oldTokenDoc) {
@@ -67,13 +70,11 @@ export const refreshTokenService = {
         const newHash = sha256(newRefreshToken);
 
         // Revoke token cũ
-        oldTokenDoc.revokedAt = new Date();
-        oldTokenDoc.replacedByTokenHash = newHash;
-        await oldTokenDoc.save();
+    await oldTokenDoc.update({ revokedAt: new Date(), replacedByTokenHash: newHash });
 
         // Lưu token mới
         await RefreshToken.create({
-            user: user._id,
+            userId: user.id || user._id,
             tokenHash: newHash,
             expiresAt: new Date(decodedNew.exp * 1000),
             createdByIp,
@@ -86,14 +87,13 @@ export const refreshTokenService = {
 
     async revoke(refreshToken, ip) {
         // Tìm token trong DB và đánh dấu thu hồi
-        const tokenHash = sha256(refreshToken);
-        const tokenDoc = await RefreshToken.findOne({ tokenHash });
+    const { RefreshToken } = getModels();
+    const tokenHash = sha256(refreshToken);
+    const tokenDoc = await RefreshToken.findOne({ where: { tokenHash } });
 
         // Nếu tìm thấy và chưa bị thu hồi, thì thu hồi
         if (tokenDoc) {
-            tokenDoc.revokedAt = new Date();
-            tokenDoc.revokedByIp = ip;
-            await tokenDoc.save();
+            await tokenDoc.update({ revokedAt: new Date(), revokedByIp: ip });
         }
     },
 };
