@@ -1,9 +1,11 @@
 import express from 'express';
 import phongChieuController from '../controllers/phongChieu.controller.js';
+import { validate } from '../middlewares/validate.middleware.js';
+import { createPhongChieuSchema } from '../validations/phongChieu.validation.js';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => res.status(501).send({ message: 'Not implemented' }));
-router.get('/', async (req, res) => res.status(501).send({ message: 'Not implemented' }));
+router.post('/', validate(createPhongChieuSchema), phongChieuController.createPhongChieu);
+router.get('/', phongChieuController.listPhongChieu);
 
 export default router;

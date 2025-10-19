@@ -2,11 +2,12 @@ import { getModels } from '../models/index.js';
 const { PhongChieu } = getModels();
 
 const create = async (payload) => {
-  // TODO
+  const p = await PhongChieu.create(payload);
+  return p;
 };
 
 const list = async () => {
-  // TODO
+  return PhongChieu.findAll();
 };
 
 export default { create, list };
