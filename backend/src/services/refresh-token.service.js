@@ -1,6 +1,7 @@
 import { getModels } from '../models/index.js';
 import { jwtUtils } from "../utils/jwt.util.js";
 import { sha256 } from "../utils/crypto.util.js"; // sha256 helper
+import { Op } from 'sequelize';
 
 export const refreshTokenService = {
     async generate(user, createdByIp, device) {
@@ -14,7 +15,7 @@ export const refreshTokenService = {
         // Lưu vào DB
         const { RefreshToken } = getModels();
         await RefreshToken.create({
-            userId: user.id || user._id,
+            userId: user.user_id || user.id || user._id,
             tokenHash,
             expiresAt: new Date(decoded.exp * 1000), // exp trong JWT là seconds
             createdByIp,
@@ -35,7 +36,7 @@ export const refreshTokenService = {
         const stored = await RefreshToken.findOne({ where: {
             tokenHash,
             revokedAt: null,
-            expiresAt: { [Symbol.for('gt')] : new Date() }
+            expiresAt: { [Op.gt]: new Date() }
         }});
 
         // Nếu không tìm thấy hoặc đã bị thu hồi
@@ -52,7 +53,7 @@ export const refreshTokenService = {
         const { RefreshToken } = getModels();
         const oldHash = sha256(oldRefreshToken);
         const oldTokenDoc = await RefreshToken.findOne({ where: {
-            userId: user.id || user._id,
+            userId: user.user_id || user.id || user._id,
             tokenHash: oldHash,
             revokedAt: null,
         }});
@@ -74,7 +75,7 @@ export const refreshTokenService = {
 
         // Lưu token mới
         await RefreshToken.create({
-            userId: user.id || user._id,
+            userId: user.user_id || user.id || user._id,
             tokenHash: newHash,
             expiresAt: new Date(decodedNew.exp * 1000),
             createdByIp,

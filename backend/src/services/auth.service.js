@@ -63,7 +63,7 @@ export const authService = {
 
         await RefreshToken.update(
             { revokedAt: new Date(), revokedByIp: ip },
-            { where: { userId: user.id, revokedAt: null } }
+            { where: { userId: user.user_id || user.id || user._id, revokedAt: null } }
         );
 
         const accessToken = jwtUtils.signAccessToken(user);
@@ -113,7 +113,7 @@ export const authService = {
         const decoded = await refreshTokenService.verify(refreshToken);
 
         const { User } = getModels();
-        const user = await User.findByPk(decoded.userId);
+    const user = await User.findByPk(decoded.userId);
         if (!user) throw { status: 404, message: "User không tồn tại" };
 
         const newAccessToken = jwtUtils.signAccessToken(user);

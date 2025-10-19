@@ -30,7 +30,7 @@ export const adminService = {
 
     return {
       message: `Tài khoản đã được tạo và mật khẩu đã gửi tới ${email}`,
-      userId: newUser.id,
+      userId: newUser.user_id || newUser.id,
     };
   },
 
