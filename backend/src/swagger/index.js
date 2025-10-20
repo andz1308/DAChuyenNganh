@@ -12,6 +12,7 @@ const swaggerDocument = {
   },
   servers: [{ url: 'http://localhost:8080', description: 'Local' }],
 
+  // Tag list (module-level)
   tags: [
     { name: 'Auths' },
     { name: 'Users' },
@@ -40,8 +41,12 @@ const swaggerDocument = {
     { name: 'DonHangDoAn' },
   ],
 
+  /***************************************************************************
+   * PATHS
+   * - Nhóm theo module để dễ đọc / maintain
+   ***************************************************************************/
   paths: {
-    // ======================== AUTH ========================
+    // -------------------- AUTH --------------------
     '/api/auth/register': {
       post: {
         tags: ['Auths'],
@@ -136,7 +141,7 @@ const swaggerDocument = {
       },
     },
 
-    // ======================== USERS ========================
+    // -------------------- USERS --------------------
     '/api/users/load': {
       get: {
         tags: ['Users'],
@@ -162,7 +167,7 @@ const swaggerDocument = {
       },
     },
 
-    // ======================== RAPS ========================
+    // -------------------- RAPS --------------------
     '/api/raps': {
       get: {
         tags: ['Raps'],
@@ -184,41 +189,31 @@ const swaggerDocument = {
       get: {
         tags: ['Raps'],
         summary: 'Lấy chi tiết rạp',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
       },
       put: {
         tags: ['Raps'],
         summary: 'Cập nhật rạp',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.RapUpdateRequest } },
-        },
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.RapUpdateRequest } } },
         responses: { 200: { description: 'OK' }, 400: { description: 'Bad Request' } },
       },
       delete: {
         tags: ['Raps'],
         summary: 'Xóa rạp',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 204: { description: 'No Content' }, 404: { description: 'Not found' } },
       },
     },
 
-    // ======================== PHÒNG CHIẾU ========================
+    // -------------------- PHÒNG CHIẾU --------------------
     '/api/phong-chieu': {
-      get: {
-        tags: ['PhongChieu'],
-        summary: 'Lấy danh sách phòng chiếu',
-        responses: { 200: { description: 'OK' } },
-      },
+      get: { tags: ['PhongChieu'], summary: 'Lấy danh sách phòng chiếu', responses: { 200: { description: 'OK' } } },
       post: {
         tags: ['PhongChieu'],
         summary: 'Tạo phòng chiếu',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.PhongChieuCreateRequest } },
-        },
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.PhongChieuCreateRequest } } },
         responses: { 201: { description: 'Created' } },
       },
     },
@@ -227,41 +222,31 @@ const swaggerDocument = {
       get: {
         tags: ['PhongChieu'],
         summary: 'Chi tiết phòng chiếu',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
       },
       put: {
         tags: ['PhongChieu'],
         summary: 'Cập nhật phòng chiếu',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.PhongChieuUpdateRequest } },
-        },
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.PhongChieuUpdateRequest } } },
         responses: { 200: { description: 'OK' } },
       },
       delete: {
         tags: ['PhongChieu'],
         summary: 'Xóa phòng chiếu',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 204: { description: 'No Content' } },
       },
     },
 
-    // ======================== PHIMS (FILMS) ========================
+    // -------------------- PHIMS (FILMS) --------------------
     '/api/phims': {
-      get: {
-        tags: ['Phims'],
-        summary: 'Lấy danh sách phim',
-        responses: { 200: { description: 'OK' } },
-      },
+      get: { tags: ['Phims'], summary: 'Lấy danh sách phim', responses: { 200: { description: 'OK' } } },
       post: {
         tags: ['Phims'],
         summary: 'Tạo phim',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.PhimCreateRequest } },
-        },
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.PhimCreateRequest } } },
         responses: { 201: { description: 'Created' } },
       },
     },
@@ -270,37 +255,31 @@ const swaggerDocument = {
       get: {
         tags: ['Phims'],
         summary: 'Chi tiết phim',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
       },
       put: {
         tags: ['Phims'],
         summary: 'Cập nhật phim',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.PhimUpdateRequest } },
-        },
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.PhimUpdateRequest } } },
         responses: { 200: { description: 'OK' } },
       },
       delete: {
         tags: ['Phims'],
         summary: 'Xóa phim',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 204: { description: 'No Content' } },
       },
     },
 
-    // ======================== SUẤT CHIẾU ========================
+    // -------------------- SUẤT CHIẾU --------------------
     '/api/suat-chieu': {
       get: { tags: ['SuatChieu'], summary: 'Lấy danh sách suất chiếu', responses: { 200: { description: 'OK' } } },
       post: {
         tags: ['SuatChieu'],
         summary: 'Tạo suất chiếu',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.SuatChieuCreateRequest } },
-        },
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.SuatChieuCreateRequest } } },
         responses: { 201: { description: 'Created' } },
       },
     },
@@ -309,37 +288,31 @@ const swaggerDocument = {
       get: {
         tags: ['SuatChieu'],
         summary: 'Chi tiết suất chiếu',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
       },
       put: {
         tags: ['SuatChieu'],
         summary: 'Cập nhật suất chiếu',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.SuatChieuUpdateRequest } },
-        },
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.SuatChieuUpdateRequest } } },
         responses: { 200: { description: 'OK' } },
       },
       delete: {
         tags: ['SuatChieu'],
         summary: 'Xóa suất chiếu',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 204: { description: 'No Content' } },
       },
     },
 
-    // ======================== GHẾ ========================
+    // -------------------- GHẾ --------------------
     '/api/ghes': {
       get: { tags: ['Ghes'], summary: 'Danh sách ghế', responses: { 200: { description: 'OK' } } },
       post: {
         tags: ['Ghes'],
         summary: 'Tạo ghế',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.GheCreateRequest } },
-        },
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.GheCreateRequest } } },
         responses: { 201: { description: 'Created' } },
       },
     },
@@ -348,37 +321,31 @@ const swaggerDocument = {
       get: {
         tags: ['Ghes'],
         summary: 'Chi tiết ghế',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
       },
       put: {
         tags: ['Ghes'],
         summary: 'Cập nhật ghế',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.GheUpdateRequest } },
-        },
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.GheUpdateRequest } } },
         responses: { 200: { description: 'OK' } },
       },
       delete: {
         tags: ['Ghes'],
         summary: 'Xóa ghế',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 204: { description: 'No Content' } },
       },
     },
 
-    // ======================== SEAT HOLDS ========================
+    // -------------------- SEAT HOLDS --------------------
     '/api/seat-holds': {
       get: { tags: ['SeatHolds'], summary: 'Danh sách giữ chỗ', responses: { 200: { description: 'OK' } } },
       post: {
         tags: ['SeatHolds'],
         summary: 'Tạo giữ chỗ',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.SeatHoldCreateRequest } },
-        },
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.SeatHoldCreateRequest } } },
         responses: { 201: { description: 'Created' } },
       },
     },
@@ -387,31 +354,24 @@ const swaggerDocument = {
       get: {
         tags: ['SeatHolds'],
         summary: 'Chi tiết giữ chỗ',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
       },
       delete: {
         tags: ['SeatHolds'],
         summary: 'Hủy giữ chỗ',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 204: { description: 'No Content' } },
       },
     },
 
-    // ======================== ĐẶT VÉ ========================
+    // -------------------- ĐẶT VÉ --------------------
     '/api/dat-ve': {
-      get: {
-        tags: ['DatVe'],
-        summary: 'Danh sách đơn đặt vé (của user hoặc admin tuỳ impl)',
-        responses: { 200: { description: 'OK' } },
-      },
+      get: { tags: ['DatVe'], summary: 'Danh sách đơn đặt vé', responses: { 200: { description: 'OK' } } },
       post: {
         tags: ['DatVe'],
         summary: 'Tạo đơn đặt vé',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.DatVeCreateRequest } },
-        },
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.DatVeCreateRequest } } },
         responses: { 201: { description: 'Created' } },
       },
     },
@@ -420,28 +380,25 @@ const swaggerDocument = {
       get: {
         tags: ['DatVe'],
         summary: 'Chi tiết đặt vé',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
       },
       put: {
         tags: ['DatVe'],
         summary: 'Cập nhật đơn đặt vé',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.DatVeUpdateRequest } },
-        },
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.DatVeUpdateRequest } } },
         responses: { 200: { description: 'OK' } },
       },
       delete: {
         tags: ['DatVe'],
         summary: 'Xóa đơn đặt vé',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 204: { description: 'No Content' } },
       },
     },
 
-    // ======================== VÉ ========================
+    // -------------------- VÉ --------------------
     '/api/ves': {
       get: { tags: ['Ves'], summary: 'Danh sách vé', responses: { 200: { description: 'OK' } } },
       post: {
@@ -474,37 +431,31 @@ const swaggerDocument = {
       get: {
         tags: ['Ves'],
         summary: 'Chi tiết vé',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
       },
       put: {
         tags: ['Ves'],
         summary: 'Cập nhật vé',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: { type: 'object' } } },
-        },
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
+        requestBody: { required: true, content: { 'application/json': { schema: { type: 'object' } } } },
         responses: { 200: { description: 'OK' } },
       },
       delete: {
         tags: ['Ves'],
         summary: 'Xóa vé',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 204: { description: 'No Content' } },
       },
     },
 
-    // ======================== ĐỒ ĂN ========================
+    // -------------------- ĐỒ ĂN --------------------
     '/api/do-an': {
       get: { tags: ['DoAn'], summary: 'Danh sách đồ ăn', responses: { 200: { description: 'OK' } } },
       post: {
         tags: ['DoAn'],
         summary: 'Tạo đồ ăn',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.DoAnCreateRequest } },
-        },
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.DoAnCreateRequest } } },
         responses: { 201: { description: 'Created' } },
       },
     },
@@ -513,50 +464,41 @@ const swaggerDocument = {
       get: {
         tags: ['DoAn'],
         summary: 'Chi tiết đồ ăn',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
       },
       put: {
         tags: ['DoAn'],
         summary: 'Cập nhật đồ ăn',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.DoAnUpdateRequest } },
-        },
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.DoAnUpdateRequest } } },
         responses: { 200: { description: 'OK' } },
       },
       delete: {
         tags: ['DoAn'],
         summary: 'Xóa đồ ăn',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
+        parameters: [{ $ref: '#/components/parameters/IdParamInteger' }],
         responses: { 204: { description: 'No Content' } },
       },
     },
 
-    // ======================== KHUYẾN MÃI ========================
+    // -------------------- KHUYẾN MÃI --------------------
     '/api/khuyen-mai': {
       get: { tags: ['KhuyenMai'], summary: 'Danh sách khuyến mãi', responses: { 200: { description: 'OK' } } },
       post: {
         tags: ['KhuyenMai'],
         summary: 'Tạo khuyến mãi',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.KhuyenMaiCreateRequest } },
-        },
+        requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.KhuyenMaiCreateRequest } } },
         responses: { 201: { description: 'Created' } },
       },
     },
 
-    // ======================== LOAI PHIM ========================
+    // -------------------- LOẠI PHIM, NGÀY, CA CHIẾU, VÀ CÁC ENTITIES KHÁC --------------------
     '/api/loai-phim': {
       get: {
         tags: ['LoaiPhim'],
         summary: 'Danh sách loại phim',
-        parameters: [
-          { name: 'page', in: 'query', schema: { type: 'integer', default: 1 } },
-          { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } },
-        ],
+        parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }],
         responses: { 200: { description: 'OK' } },
       },
       post: {
@@ -567,136 +509,102 @@ const swaggerDocument = {
       },
     },
     '/api/loai-phim/{id}': {
-      get: { tags: ['LoaiPhim'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['LoaiPhim'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/LoaiPhimUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['LoaiPhim'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['LoaiPhim'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['LoaiPhim'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/LoaiPhimUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['LoaiPhim'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    // ======================== LOAI NGAY ========================
     '/api/loai-ngay': {
       get: { tags: ['LoaiNgay'], summary: 'Danh sách loại ngày', parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }], responses: { 200: { description: 'OK' } } },
       post: { tags: ['LoaiNgay'], summary: 'Tạo loại ngày', requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/LoaiNgayCreateRequest' } } } }, responses: { 201: { description: 'Created' } } },
     },
     '/api/loai-ngay/{id}': {
-      get: { tags: ['LoaiNgay'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['LoaiNgay'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/LoaiNgayUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['LoaiNgay'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['LoaiNgay'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['LoaiNgay'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/LoaiNgayUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['LoaiNgay'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    // ======================== CA CHIEU ========================
     '/api/ca-chieu': {
       get: { tags: ['CaChieu'], summary: 'Danh sách ca chiếu', parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }], responses: { 200: { description: 'OK' } } },
       post: { tags: ['CaChieu'], summary: 'Tạo ca chiếu', requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/CaChieuCreateRequest' } } } }, responses: { 201: { description: 'Created' } } },
     },
     '/api/ca-chieu/{id}': {
-      get: { tags: ['CaChieu'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['CaChieu'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/CaChieuUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['CaChieu'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['CaChieu'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['CaChieu'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/CaChieuUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['CaChieu'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    // ======================== DAO DIEN ========================
     '/api/dao-dien': {
       get: { tags: ['DaoDien'], summary: 'Danh sách đạo diễn', parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }], responses: { 200: { description: 'OK' } } },
       post: { tags: ['DaoDien'], summary: 'Tạo đạo diễn', requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DaoDienCreateRequest' } } } }, responses: { 201: { description: 'Created' } } },
     },
     '/api/dao-dien/{id}': {
-      get: { tags: ['DaoDien'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['DaoDien'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DaoDienUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['DaoDien'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['DaoDien'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['DaoDien'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DaoDienUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['DaoDien'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    // ======================== DIEN VIEN ========================
     '/api/dien-vien': {
       get: { tags: ['DienVien'], summary: 'Danh sách diễn viên', parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }], responses: { 200: { description: 'OK' } } },
       post: { tags: ['DienVien'], summary: 'Tạo diễn viên', requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DienVienCreateRequest' } } } }, responses: { 201: { description: 'Created' } } },
     },
     '/api/dien-vien/{id}': {
-      get: { tags: ['DienVien'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['DienVien'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DienVienUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['DienVien'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['DienVien'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['DienVien'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DienVienUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['DienVien'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    // ======================== NHA SAN XUAT ========================
     '/api/nha-san-xuat': {
       get: { tags: ['NhaSanXuat'], summary: 'Danh sách NSX', parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }], responses: { 200: { description: 'OK' } } },
       post: { tags: ['NhaSanXuat'], summary: 'Tạo NSX', requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/NhaSanXuatCreateRequest' } } } }, responses: { 201: { description: 'Created' } } },
     },
     '/api/nha-san-xuat/{id}': {
-      get: { tags: ['NhaSanXuat'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['NhaSanXuat'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/NhaSanXuatUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['NhaSanXuat'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['NhaSanXuat'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['NhaSanXuat'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/NhaSanXuatUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['NhaSanXuat'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    // ======================== LOAI GHE ========================
     '/api/loai-ghe': {
       get: { tags: ['LoaiGhe'], summary: 'Danh sách loại ghế', parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }], responses: { 200: { description: 'OK' } } },
       post: { tags: ['LoaiGhe'], summary: 'Tạo loại ghế', requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/LoaiGheCreateRequest' } } } }, responses: { 201: { description: 'Created' } } },
     },
     '/api/loai-ghe/{id}': {
-      get: { tags: ['LoaiGhe'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['LoaiGhe'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/LoaiGheUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['LoaiGhe'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['LoaiGhe'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['LoaiGhe'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/LoaiGheUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['LoaiGhe'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    // ======================== VAI DIEN ========================
     '/api/vai-dien': {
       get: { tags: ['VaiDien'], summary: 'Danh sách vai diễn', parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }], responses: { 200: { description: 'OK' } } },
       post: { tags: ['VaiDien'], summary: 'Tạo vai diễn', requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/VaiDienCreateRequest' } } } }, responses: { 201: { description: 'Created' } } },
     },
     '/api/vai-dien/{id}': {
-      get: { tags: ['VaiDien'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['VaiDien'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/VaiDienUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['VaiDien'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['VaiDien'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['VaiDien'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/VaiDienUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['VaiDien'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    // ======================== DANH GIA ========================
     '/api/danh-gia': {
       get: { tags: ['DanhGia'], summary: 'Danh sách đánh giá', parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }], responses: { 200: { description: 'OK' } } },
       post: { tags: ['DanhGia'], summary: 'Tạo đánh giá', requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DanhGiaCreateRequest' } } } }, responses: { 201: { description: 'Created' } } },
     },
     '/api/danh-gia/{id}': {
-      get: { tags: ['DanhGia'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['DanhGia'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DanhGiaUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['DanhGia'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['DanhGia'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['DanhGia'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DanhGiaUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['DanhGia'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    // ======================== DON HANG DO AN ========================
     '/api/don-hang-do-an': {
       get: { tags: ['DonHangDoAn'], summary: 'Danh sách đơn hàng đồ ăn', parameters: [{ name: 'page', in: 'query', schema: { type: 'integer', default: 1 } }, { name: 'limit', in: 'query', schema: { type: 'integer', default: 10 } }], responses: { 200: { description: 'OK' } } },
       post: { tags: ['DonHangDoAn'], summary: 'Tạo đơn hàng đồ ăn', requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DonHangDoAnCreateRequest' } } } }, responses: { 201: { description: 'Created' } } },
     },
     '/api/don-hang-do-an/{id}': {
-      get: { tags: ['DonHangDoAn'], summary: 'Chi tiết', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
-      put: { tags: ['DonHangDoAn'], summary: 'Cập nhật', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DonHangDoAnUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
-      delete: { tags: ['DonHangDoAn'], summary: 'Xóa', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } },
+      get: { tags: ['DonHangDoAn'], summary: 'Chi tiết', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } },
+      put: { tags: ['DonHangDoAn'], summary: 'Cập nhật', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: { $ref: '#/components/schemas/DonHangDoAnUpdateRequest' } } } }, responses: { 200: { description: 'OK' } } },
+      delete: { tags: ['DonHangDoAn'], summary: 'Xóa', parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } },
     },
 
-    '/api/khuyen-mai/{id}': {
-      get: {
-        tags: ['KhuyenMai'],
-        summary: 'Chi tiết khuyến mãi',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
-      },
-      put: {
-        tags: ['KhuyenMai'],
-        summary: 'Cập nhật khuyến mãi',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.KhuyenMaiUpdateRequest } },
-        },
-        responses: { 200: { description: 'OK' } },
-      },
-      delete: {
-        tags: ['KhuyenMai'],
-        summary: 'Xóa khuyến mãi',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }],
-        responses: { 204: { description: 'No Content' } },
-      },
-    },
-
-    // ======================== UPLOAD ========================
+    // -------------------- UPLOAD --------------------
     '/api/upload/singleFile': {
       post: {
         tags: ['Upload'],
@@ -718,85 +626,54 @@ const swaggerDocument = {
       },
     },
 
-    // ======================== STAFF ========================
+    // -------------------- STAFF --------------------
     '/api/staff': {
       get: { tags: ['Staff'], summary: 'Danh sách nhân viên', responses: { 200: { description: 'OK' } } },
-      post: {
-        tags: ['Staff'],
-        summary: 'Tạo nhân viên',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: DomainSchema.StaffCreateRequest } },
-        },
-        responses: { 201: { description: 'Created' } },
-      },
+      post: { tags: ['Staff'], summary: 'Tạo nhân viên', requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.StaffCreateRequest } } }, responses: { 201: { description: 'Created' } } },
     },
 
-    // ======================== ADMIN ========================
+    // -------------------- ADMIN --------------------
     '/api/admin/create': {
       post: {
         tags: ['Admin'],
         summary: 'Admin tạo tài khoản nhân viên',
         security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: AuthSchema.AdminCreateAccountRequest } },
-        },
+        requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.AdminCreateAccountRequest } } },
         responses: { 201: { description: 'Created' } },
       },
     },
-
-    '/api/admin/showall': {
-      get: {
-        tags: ['Admin'],
-        summary: 'Danh sách tất cả users',
-        security: [{ bearerAuth: [] }],
-        responses: { 200: { description: 'OK' }, 401: { description: 'Unauthorized' } },
-      },
-    },
-
-    '/api/admin/show/{id}': {
-      get: {
-        tags: ['Admin'],
-        summary: 'Lấy user theo ID',
-        security: [{ bearerAuth: [] }],
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
-        responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } },
-      },
-    },
-
-    '/api/admin/update/{id}': {
-      put: {
-        tags: ['Admin'],
-        summary: 'Cập nhật user theo ID',
-        security: [{ bearerAuth: [] }],
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: AuthSchema.AdminUpdateAccountRequest } },
-        },
-        responses: { 200: { description: 'OK' } },
-      },
-    },
-
-    '/api/admin/delete/{id}': {
-      delete: {
-        tags: ['Admin'],
-        summary: 'Xóa user theo ID',
-        security: [{ bearerAuth: [] }],
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
-        responses: { 204: { description: 'No Content' } },
-      },
-    },
+    '/api/admin/showall': { get: { tags: ['Admin'], summary: 'Danh sách tất cả users', security: [{ bearerAuth: [] }], responses: { 200: { description: 'OK' }, 401: { description: 'Unauthorized' } } } },
+    '/api/admin/show/{id}': { get: { tags: ['Admin'], summary: 'Lấy user theo ID', security: [{ bearerAuth: [] }], parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } } },
+    '/api/admin/update/{id}': { put: { tags: ['Admin'], summary: 'Cập nhật user theo ID', security: [{ bearerAuth: [] }], parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.AdminUpdateAccountRequest } } }, responses: { 200: { description: 'OK' } } } },
+    '/api/admin/delete/{id}': { delete: { tags: ['Admin'], summary: 'Xóa user theo ID', security: [{ bearerAuth: [] }], parameters: [{ $ref: '#/components/parameters/IdParamInteger' }], responses: { 204: { description: 'No Content' } } } },
   }, // end paths
 
+  /***************************************************************************
+   * COMPONENTS
+   ***************************************************************************/
   components: {
+    // security schemes first (used across endpoints)
+    securitySchemes: {
+      bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+    },
+
+    // reusable parameters
+    parameters: {
+      IdParamInteger: {
+        name: 'id',
+        in: 'path',
+        required: true,
+        schema: { type: 'integer' },
+        description: 'ID (integer)',
+      },
+    },
+
+    // schemas: merge imported schemas then add small helper schemas
     schemas: {
-      // expose imported schemas so references like AuthSchema.RegisterRequest work
       ...AuthSchema,
       ...DomainSchema,
 
-      // optional small helper schemas (nếu cần)
+      // helper schemas (kept small; use only if DomainSchema không cung cấp)
       PhongChieuRequest: {
         type: 'object',
         properties: {
@@ -806,6 +683,7 @@ const swaggerDocument = {
         },
         required: ['rap_id', 'ten_phong', 'suc_chua'],
       },
+
       DatVeRequest: {
         type: 'object',
         properties: {
@@ -816,41 +694,38 @@ const swaggerDocument = {
         },
       },
 
+      // LoaiPhim / LoaiNgay / CaChieu / DaoDien / DienVien / NhaSanXuat / LoaiGhe / VaiDien / DanhGia / DonHangDoAn
       LoaiPhimCreateRequest: { type: 'object', properties: { ten_loai: { type: 'string' }, mo_ta: { type: 'string' } }, required: ['ten_loai'] },
       LoaiPhimUpdateRequest: { type: 'object', properties: { ten_loai: { type: 'string' }, mo_ta: { type: 'string' } } },
 
-      LoaiNgayCreateRequest: { type: 'object', properties: { loai_ngay: { type: 'string' }, phu_phi: { type: 'number' } }, required: ['loai_ngay','phu_phi'] },
+      LoaiNgayCreateRequest: { type: 'object', properties: { loai_ngay: { type: 'string' }, phu_phi: { type: 'number' } }, required: ['loai_ngay', 'phu_phi'] },
       LoaiNgayUpdateRequest: { type: 'object', properties: { loai_ngay: { type: 'string' }, phu_phi: { type: 'number' } } },
 
-      CaChieuCreateRequest: { type: 'object', properties: { gio_bat_dau: { type: 'string' }, gio_ket_thuc: { type: 'string' } }, required: ['gio_bat_dau','gio_ket_thuc'] },
+      CaChieuCreateRequest: { type: 'object', properties: { gio_bat_dau: { type: 'string' }, gio_ket_thuc: { type: 'string' } }, required: ['gio_bat_dau', 'gio_ket_thuc'] },
       CaChieuUpdateRequest: { type: 'object', properties: { gio_bat_dau: { type: 'string' }, gio_ket_thuc: { type: 'string' } } },
 
-      DaoDienCreateRequest: { type: 'object', properties: { ho_ten: { type: 'string' }, ngay_sinh: { type: 'string', format:'date-time' }, quoc_tich: { type: 'string' }, tieu_su: { type: 'string' }, hinh_anh: { type: 'string' } }, required: ['ho_ten'] },
-      DaoDienUpdateRequest: { type: 'object', properties: { ho_ten: { type: 'string' }, ngay_sinh: { type: 'string', format:'date-time' }, quoc_tich: { type: 'string' }, tieu_su: { type: 'string' }, hinh_anh: { type: 'string' } } },
+      DaoDienCreateRequest: { type: 'object', properties: { ho_ten: { type: 'string' }, ngay_sinh: { type: 'string', format: 'date-time' }, quoc_tich: { type: 'string' }, tieu_su: { type: 'string' }, hinh_anh: { type: 'string' } }, required: ['ho_ten'] },
+      DaoDienUpdateRequest: { type: 'object', properties: { ho_ten: { type: 'string' }, ngay_sinh: { type: 'string', format: 'date-time' }, quoc_tich: { type: 'string' }, tieu_su: { type: 'string' }, hinh_anh: { type: 'string' } } },
 
-      DienVienCreateRequest: { type: 'object', properties: { ho_ten: { type: 'string' }, gioi_tinh: { type: 'string' }, nghe_danh: { type: 'string' }, ngay_sinh: { type: 'string', format:'date-time' }, quoc_tich: { type: 'string' }, tieu_su: { type: 'string' }, hinh_anh: { type: 'string' } }, required: ['ho_ten'] },
-      DienVienUpdateRequest: { type: 'object', properties: { ho_ten: { type: 'string' }, gioi_tinh: { type: 'string' }, nghe_danh: { type: 'string' }, ngay_sinh: { type: 'string', format:'date-time' }, quoc_tich: { type: 'string' }, tieu_su: { type: 'string' }, hinh_anh: { type: 'string' } } },
+      DienVienCreateRequest: { type: 'object', properties: { ho_ten: { type: 'string' }, gioi_tinh: { type: 'string' }, nghe_danh: { type: 'string' }, ngay_sinh: { type: 'string', format: 'date-time' }, quoc_tich: { type: 'string' }, tieu_su: { type: 'string' }, hinh_anh: { type: 'string' } }, required: ['ho_ten'] },
+      DienVienUpdateRequest: { type: 'object', properties: { ho_ten: { type: 'string' }, gioi_tinh: { type: 'string' }, nghe_danh: { type: 'string' }, ngay_sinh: { type: 'string', format: 'date-time' }, quoc_tich: { type: 'string' }, tieu_su: { type: 'string' }, hinh_anh: { type: 'string' } } },
 
       NhaSanXuatCreateRequest: { type: 'object', properties: { ten_nha_san_xuat: { type: 'string' }, quoc_gia: { type: 'string' } }, required: ['ten_nha_san_xuat'] },
       NhaSanXuatUpdateRequest: { type: 'object', properties: { ten_nha_san_xuat: { type: 'string' }, quoc_gia: { type: 'string' } } },
 
-      LoaiGheCreateRequest: { type: 'object', properties: { ten_loai: { type: 'string' }, phu_phi: { type: 'number' } }, required: ['ten_loai','phu_phi'] },
+      LoaiGheCreateRequest: { type: 'object', properties: { ten_loai: { type: 'string' }, phu_phi: { type: 'number' } }, required: ['ten_loai', 'phu_phi'] },
       LoaiGheUpdateRequest: { type: 'object', properties: { ten_loai: { type: 'string' }, phu_phi: { type: 'number' } } },
 
-      VaiDienCreateRequest: { type: 'object', properties: { dien_vien_id: { type: 'integer' }, phim_id: { type: 'integer' }, ten_vai_dien: { type: 'string' }, hinh_anh: { type: 'string' }, mo_ta: { type: 'string' } }, required: ['dien_vien_id','phim_id'] },
+      VaiDienCreateRequest: { type: 'object', properties: { dien_vien_id: { type: 'integer' }, phim_id: { type: 'integer' }, ten_vai_dien: { type: 'string' }, hinh_anh: { type: 'string' }, mo_ta: { type: 'string' } }, required: ['dien_vien_id', 'phim_id'] },
       VaiDienUpdateRequest: { type: 'object', properties: { dien_vien_id: { type: 'integer' }, phim_id: { type: 'integer' }, ten_vai_dien: { type: 'string' }, hinh_anh: { type: 'string' }, mo_ta: { type: 'string' } } },
 
-      DanhGiaCreateRequest: { type: 'object', properties: { ve_id: { type: 'integer' }, khach_hang_id: { type: 'integer' }, phim_id: { type: 'integer' }, noi_dung: { type: 'string' }, diem_rating: { type: 'integer', minimum: 1, maximum: 10 } }, required: ['ve_id','khach_hang_id','phim_id','diem_rating'] },
+      DanhGiaCreateRequest: { type: 'object', properties: { ve_id: { type: 'integer' }, khach_hang_id: { type: 'integer' }, phim_id: { type: 'integer' }, noi_dung: { type: 'string' }, diem_rating: { type: 'integer', minimum: 1, maximum: 10 } }, required: ['ve_id', 'khach_hang_id', 'phim_id', 'diem_rating'] },
       DanhGiaUpdateRequest: { type: 'object', properties: { ve_id: { type: 'integer' }, khach_hang_id: { type: 'integer' }, phim_id: { type: 'integer' }, noi_dung: { type: 'string' }, diem_rating: { type: 'integer', minimum: 1, maximum: 10 } } },
 
-      DonHangDoAnCreateRequest: { type: 'object', properties: { Dat_Ve_id: { type: 'integer' }, Do_An_id: { type: 'integer' }, so_luong: { type: 'integer', minimum: 1 } }, required: ['Dat_Ve_id','Do_An_id','so_luong'] },
+      DonHangDoAnCreateRequest: { type: 'object', properties: { Dat_Ve_id: { type: 'integer' }, Do_An_id: { type: 'integer' }, so_luong: { type: 'integer', minimum: 1 } }, required: ['Dat_Ve_id', 'Do_An_id', 'so_luong'] },
       DonHangDoAnUpdateRequest: { type: 'object', properties: { Dat_Ve_id: { type: 'integer' }, Do_An_id: { type: 'integer' }, so_luong: { type: 'integer', minimum: 1 } } },
-    },
-
-    securitySchemes: {
-      bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
-    },
-  },
+    }, // end schemas
+  }, // end components
 };
 
 export default swaggerDocument;
