@@ -14,6 +14,16 @@ import khuyenMaiRouter from './khuyenMaiRouter.js';
 import doAnRouter from './doAnRouter.js';
 import staffRouter from './staffRouter.js';
 import seatHoldRouter from './seatHoldRouter.js';
+import loaiPhimRouter from './loaiPhimRouter.js';
+import loaiNgayRouter from './loaiNgayRouter.js';
+import caChieuRouter from './caChieuRouter.js';
+import daoDienRouter from './daoDienRouter.js';
+import dienVienRouter from './dienVienRouter.js';
+import nhaSanXuatRouter from './nhaSanXuatRouter.js';
+import loaiGheRouter from './loaiGheRouter.js';
+import vaiDienRouter from './vaiDienRouter.js';
+import danhGiaRouter from './danhGiaRouter.js';
+import donHangDoAnRouter from './donHangDoAnRouter.js';
 
 const rootRouter = express.Router();
 
@@ -36,5 +46,15 @@ rootRouter.use('/khuyen-mai', khuyenMaiRouter);
 rootRouter.use('/do-an', doAnRouter);
 rootRouter.use('/staff', staffRouter);
 rootRouter.use('/seat-holds', seatHoldRouter);
+rootRouter.use('/loai-phim', loaiPhimRouter);
+rootRouter.use('/loai-ngay', loaiNgayRouter);
+rootRouter.use('/ca-chieu', caChieuRouter);
+rootRouter.use('/dao-dien', daoDienRouter);
+rootRouter.use('/dien-vien', dienVienRouter);
+rootRouter.use('/nha-san-xuat', nhaSanXuatRouter);
+rootRouter.use('/loai-ghe', loaiGheRouter);
+rootRouter.use('/vai-dien', vaiDienRouter);
+rootRouter.use('/danh-gia', danhGiaRouter);
+rootRouter.use('/don-hang-do-an', donHangDoAnRouter);
 
 export default rootRouter;
