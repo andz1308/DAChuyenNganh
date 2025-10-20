@@ -6,7 +6,7 @@ import DomainSchema from '../schemas/domain.schema.js';
 const swaggerDocument = {
   openapi: '3.0.0',
   info: {
-    title: 'Cinema Management API (RagDB)',
+    title: 'Cinema Management API',
     version: '1.0.0',
     description: 'API tài liệu cho hệ thống quản lý rạp chiếu phim',
   },
