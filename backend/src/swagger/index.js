@@ -1,341 +1,90 @@
-// docs/swagger.js
 import { MailType } from '../constants/mail.constant.js';
 import AuthSchema from '../schemas/auth.schema.js';
+import DomainSchema from '../schemas/domain.schema.js';
 
 const swaggerDocument = {
   openapi: '3.0.0',
   info: {
     title: 'Cinema Management API (RagDB)',
     version: '1.0.0',
-    description: 'API tài liệu cho hệ thống quản lý rạp chiếu phim tương tự CGV',
+    description: 'API tài liệu cho hệ thống quản lý rạp chiếu phim',
   },
-
   servers: [
-    { url: 'http://localhost:8080', description: 'Local Development Server' },
-    { url: '/projects/ragdb', description: 'Production - Techleaf Server' },
+    { url: 'http://localhost:8080', description: 'Local' },
   ],
-
   tags: [
-    { name: 'Auths', description: 'Xác thực và đăng nhập/đăng ký người dùng' },
-    { name: 'Users', description: 'Quản lý thông tin người dùng' },
-    { name: 'Raps', description: 'Quản lý thông tin rạp chiếu' },
-    { name: 'PhongChieu', description: 'Quản lý phòng chiếu' },
-    { name: 'Phims', description: 'Quản lý phim' },
-    { name: 'SuatChieu', description: 'Quản lý suất chiếu' },
-    { name: 'DatVe', description: 'Đặt vé xem phim' },
-    { name: 'Admin', description: 'Quản trị hệ thống' },
+    { name: 'Auths' },
+    { name: 'Users' },
+    { name: 'Raps' },
+    { name: 'PhongChieu' },
+    { name: 'Phims' },
+    { name: 'SuatChieu' },
+    { name: 'Ghes' },
+    { name: 'SeatHolds' },
+    { name: 'DatVe' },
+    { name: 'Ves' },
+    { name: 'DoAn' },
+    { name: 'KhuyenMai' },
+  { name: 'Upload' },
+  { name: 'Staff' },
+    { name: 'Admin' },
   ],
-
   paths: {
-    // -------------------- AUTH --------------------
-    '/api/auth/register': {
-      post: {
-        tags: ['Auths'],
-        summary: 'Đăng ký tài khoản mới',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: AuthSchema.RegisterRequest } },
-        },
-        responses: {
-          201: { description: 'Đăng ký thành công' },
-          400: { description: 'Sai dữ liệu đầu vào' },
-        },
-      },
-    },
-    '/api/auth/login': {
-      post: {
-        tags: ['Auths'],
-        summary: 'Đăng nhập tài khoản',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: AuthSchema.LoginRequest } },
-        },
-        responses: {
-          200: { description: 'Đăng nhập thành công' },
-          400: { description: 'Sai thông tin đăng nhập' },
-        },
-      },
-    },
-    '/api/auth/refresh-token': {
-      post: {
-        tags: ['Auths'],
-        summary: 'Làm mới token truy cập',
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: AuthSchema.RefreshTokenRequest } },
-        },
-        responses: {
-          200: { description: 'Trả về access token mới' },
-          401: { description: 'Token không hợp lệ' },
-        },
-      },
-    },
-    '/api/auth/send-otp': {
-      post: {
-        tags: ['Auths'],
-        summary: 'Gửi mã OTP đến email người dùng',
-        parameters: [
-          {
-            name: 'type',
-            in: 'query',
-            required: true,
-            schema: {
-              type: 'string',
-              enum: [MailType.RESET_PASSWORD, MailType.SIGN_UP],
-            },
-          },
-        ],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: AuthSchema.SendOtpRequest } },
-        },
-        responses: {
-          200: { description: 'Gửi OTP thành công' },
-          400: { description: 'Email không hợp lệ' },
-        },
-      },
-    },
-    '/api/auth/logout': {
-      post: {
-        tags: ['Auths'],
-        summary: 'Đăng xuất khỏi hệ thống',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: AuthSchema.LogoutRequest } },
-        },
-        responses: {
-          200: { description: 'Đăng xuất thành công' },
-          401: { description: 'Token không hợp lệ' },
-        },
-      },
-    },
+    '/api/auth/register': { post: { tags: ['Auths'], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.RegisterRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/auth/login': { post: { tags: ['Auths'], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.LoginRequest } } }, responses: { 200: { description: 'OK' } } } },
+    '/api/auth/refresh-token': { post: { tags: ['Auths'], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.RefreshTokenRequest } } }, responses: { 200: { description: 'OK' } } } },
+    '/api/auth/send-otp': { post: { tags: ['Auths'], parameters: [{ name: 'type', in: 'query', required: true, schema: { type: 'string', enum: [MailType.RESET_PASSWORD, MailType.SIGN_UP] } }], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.SendOtpRequest } } }, responses: { 200: { description: 'OK' } } } },
+    '/api/auth/logout': { post: { tags: ['Auths'], security: [{ bearerAuth: [] }], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.LogoutRequest } } }, responses: { 200: { description: 'OK' } } } },
+    '/api/auth/reset-password': { put: { tags: ['Auths'], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.ResetPasswordRequest } } }, responses: { 200: { description: 'OK' } } } },
+    '/api/auth/update-password': { put: { tags: ['Auths'], security: [{ bearerAuth: [] }], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.UpdatePasswordRequest } } }, responses: { 200: { description: 'OK' } } } },
 
-    // -------------------- USERS --------------------
-    '/api/users/load': {
-      get: {
-        tags: ['Users'],
-        summary: 'Lấy thông tin người dùng hiện tại',
-        security: [{ bearerAuth: [] }],
-        responses: {
-          200: { description: 'Thông tin người dùng hiện tại', content: { 'application/json': { schema: AuthSchema.UserInfoRequest } } },
-          401: { description: 'Token không hợp lệ hoặc hết hạn' },
-        },
-      },
-    },
-    '/api/users/update': {
-      put: {
-        tags: ['Users'],
-        summary: 'Cập nhật thông tin người dùng',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: AuthSchema.UserUpdateRequest } },
-        },
-        responses: {
-          200: { description: 'Cập nhật thành công' },
-          400: { description: 'Sai dữ liệu' },
-        },
-      },
-    },
+    '/api/users/load': { get: { tags: ['Users'], security: [{ bearerAuth: [] }], responses: { 200: { description: 'OK', content: { 'application/json': { schema: DomainSchema.UserInfo } } } } } },
+    '/api/users/update': { put: { tags: ['Users'], security: [{ bearerAuth: [] }], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.UserUpdateRequest } } }, responses: { 200: { description: 'OK' } } } },
 
-    // -------------------- RAP --------------------
-    '/api/raps': {
-      post: {
-        tags: ['Raps'],
-        summary: 'Tạo rạp mới',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  ten_rap: { type: 'string' },
-                  dia_chi: { type: 'string' },
-                  email: { type: 'string' },
-                  mo_ta: { type: 'string' },
-                },
-                required: ['ten_rap'],
-              },
-            },
-          },
-        },
-        responses: { 201: { description: 'Tạo thành công' }, 400: { description: 'Sai dữ liệu' } },
-      },
-      get: {
-        tags: ['Raps'],
-        summary: 'Lấy danh sách rạp chiếu',
-        responses: { 200: { description: 'OK' } },
-      },
-    },
+    '/api/raps': { get: { tags: ['Raps'], responses: { 200: { description: 'OK' } } }, post: { tags: ['Raps'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.RapCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/raps/{id}': { get: { tags: ['Raps'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, put: { tags: ['Raps'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.RapUpdateRequest } } }, responses: { 200: { description: 'OK' } } }, delete: { tags: ['Raps'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
 
-    // -------------------- PHONG CHIEU --------------------
-    '/api/phong-chieu': {
-      post: {
-        tags: ['PhongChieu'],
-        summary: 'Tạo phòng chiếu mới',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: { $ref: '#/components/schemas/PhongChieuRequest' } } },
-        },
-        responses: { 201: { description: 'Tạo thành công' } },
-      },
-      get: {
-        tags: ['PhongChieu'],
-        summary: 'Lấy danh sách phòng chiếu',
-        responses: { 200: { description: 'OK' } },
-      },
-    },
+    '/api/phong-chieu': { get: { tags: ['PhongChieu'], responses: { 200: { description: 'OK' } } }, post: { tags: ['PhongChieu'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.PhongChieuCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/phong-chieu/{id}': { get: { tags: ['PhongChieu'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, put: { tags: ['PhongChieu'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.PhongChieuUpdateRequest } } }, responses: { 200: { description: 'OK' } } }, delete: { tags: ['PhongChieu'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
 
-    // -------------------- PHIM --------------------
-    '/api/phims': {
-      get: {
-        tags: ['Phims'],
-        summary: 'Danh sách phim hiện có',
-        responses: { 200: { description: 'OK' } },
-      },
-      post: {
-        tags: ['Phims'],
-        summary: 'Thêm phim mới (Admin)',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: { $ref: '#/components/schemas/PhimRequest' } } },
-        },
-        responses: { 201: { description: 'Tạo thành công' } },
-      },
-    },
+    '/api/phims': { get: { tags: ['Phims'], responses: { 200: { description: 'OK' } } }, post: { tags: ['Phims'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.PhimCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/phims/{id}': { get: { tags: ['Phims'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, put: { tags: ['Phims'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.PhimUpdateRequest } } }, responses: { 200: { description: 'OK' } } }, delete: { tags: ['Phims'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
 
-    // -------------------- SUAT CHIEU --------------------
-    '/api/suat-chieu': {
-      get: {
-        tags: ['SuatChieu'],
-        summary: 'Lấy danh sách suất chiếu',
-        responses: { 200: { description: 'OK' } },
-      },
-      post: {
-        tags: ['SuatChieu'],
-        summary: 'Tạo suất chiếu mới',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: { $ref: '#/components/schemas/SuatChieuRequest' } } },
-        },
-        responses: { 201: { description: 'Tạo thành công' } },
-      },
-    },
+    '/api/suat-chieu': { get: { tags: ['SuatChieu'], responses: { 200: { description: 'OK' } } }, post: { tags: ['SuatChieu'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.SuatChieuCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/suat-chieu/{id}': { get: { tags: ['SuatChieu'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, put: { tags: ['SuatChieu'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.SuatChieuUpdateRequest } } }, responses: { 200: { description: 'OK' } } }, delete: { tags: ['SuatChieu'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
 
-    // -------------------- DAT VE --------------------
-    '/api/dat-ve': {
-      post: {
-        tags: ['DatVe'],
-        summary: 'Đặt vé xem phim',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: { $ref: '#/components/schemas/DatVeRequest' } } },
-        },
-        responses: {
-          201: {
-            description: 'Đặt vé thành công',
-            content: { 'application/json': { schema: { $ref: '#/components/schemas/DatVeResponse' } } },
-          },
-        },
-      },
-      get: {
-        tags: ['DatVe'],
-        summary: 'Danh sách đơn đặt vé của người dùng',
-        security: [{ bearerAuth: [] }],
-        responses: { 200: { description: 'OK' } },
-      },
-    },
+    '/api/ghes': { get: { tags: ['Ghes'], responses: { 200: { description: 'OK' } } }, post: { tags: ['Ghes'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.GheCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/ghes/{id}': { get: { tags: ['Ghes'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, put: { tags: ['Ghes'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.GheUpdateRequest } } }, responses: { 200: { description: 'OK' } } }, delete: { tags: ['Ghes'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
 
-    // -------------------- ADMIN --------------------
-    '/api/admin/create': {
-      post: {
-        tags: ['Admin'],
-        summary: 'Admin tạo tài khoản nhân viên',
-        security: [{ bearerAuth: [] }],
-        requestBody: {
-          required: true,
-          content: { 'application/json': { schema: AuthSchema.AdminCreateAccountRequest } },
-        },
-        responses: { 201: { description: 'Tạo thành công' } },
-      },
-    },
+    '/api/seat-holds': { get: { tags: ['SeatHolds'], responses: { 200: { description: 'OK' } } }, post: { tags: ['SeatHolds'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.SeatHoldCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/seat-holds/{id}': { get: { tags: ['SeatHolds'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, delete: { tags: ['SeatHolds'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
+
+    '/api/dat-ve': { get: { tags: ['DatVe'], responses: { 200: { description: 'OK' } } }, post: { tags: ['DatVe'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.DatVeCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/dat-ve/{id}': { get: { tags: ['DatVe'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, put: { tags: ['DatVe'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.DatVeUpdateRequest } } }, responses: { 200: { description: 'OK' } } }, delete: { tags: ['DatVe'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
+
+    '/api/ves': { get: { tags: ['Ves'], responses: { 200: { description: 'OK' } } }, post: { tags: ['Ves'], requestBody: { required: true, content: { 'application/json': { schema: { type: 'object', properties: { ghe_id: { type: 'integer' }, Dat_Ve_id: { type: 'integer' }, suat_chieu_id: { type: 'integer' }, ma_qr_code: { type: 'string' }, trang_thai_ve: { type: 'string' }, gia_ve: { type: 'number' } }, required: ['ghe_id', 'Dat_Ve_id', 'suat_chieu_id', 'ma_qr_code', 'trang_thai_ve', 'gia_ve'] } } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/ves/{id}': { get: { tags: ['Ves'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, put: { tags: ['Ves'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: { type: 'object' } } } }, responses: { 200: { description: 'OK' } } }, delete: { tags: ['Ves'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
+
+    '/api/do-an': { get: { tags: ['DoAn'], responses: { 200: { description: 'OK' } } }, post: { tags: ['DoAn'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.DoAnCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/do-an/{id}': { get: { tags: ['DoAn'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, put: { tags: ['DoAn'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.DoAnUpdateRequest } } }, responses: { 200: { description: 'OK' } } }, delete: { tags: ['DoAn'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
+
+    '/api/khuyen-mai': { get: { tags: ['KhuyenMai'], responses: { 200: { description: 'OK' } } }, post: { tags: ['KhuyenMai'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.KhuyenMaiCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/khuyen-mai/{id}': { get: { tags: ['KhuyenMai'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } }, put: { tags: ['KhuyenMai'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.KhuyenMaiUpdateRequest } } }, responses: { 200: { description: 'OK' } } }, delete: { tags: ['KhuyenMai'], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'integer' } }], responses: { 204: { description: 'No Content' } } } },
+
+    '/api/upload/singleFile': { post: { tags: ['Upload'], security: [{ bearerAuth: [] }], requestBody: { required: true, content: { 'multipart/form-data': { schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } }, required: ['file'] } } } }, responses: { 200: { description: 'OK' } } } },
+
+  '/api/staff': { get: { tags: ['Staff'], responses: { 200: { description: 'OK' } } }, post: { tags: ['Staff'], requestBody: { required: true, content: { 'application/json': { schema: DomainSchema.StaffCreateRequest } } }, responses: { 201: { description: 'Created' } } } },
+
+    '/api/admin/create': { post: { tags: ['Admin'], security: [{ bearerAuth: [] }], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.AdminCreateAccountRequest } } }, responses: { 201: { description: 'Created' } } } },
+    '/api/admin/showall': { get: { tags: ['Admin'], security: [{ bearerAuth: [] }], responses: { 200: { description: 'OK' } } } },
+    '/api/admin/show/{id}': { get: { tags: ['Admin'], security: [{ bearerAuth: [] }], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }], responses: { 200: { description: 'OK' }, 404: { description: 'Not found' } } } },
+    '/api/admin/update/{id}': { put: { tags: ['Admin'], security: [{ bearerAuth: [] }], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }], requestBody: { required: true, content: { 'application/json': { schema: AuthSchema.AdminUpdateAccountRequest } } }, responses: { 200: { description: 'OK' } } } },
+    '/api/admin/delete/{id}': { delete: { tags: ['Admin'], security: [{ bearerAuth: [] }], parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }], responses: { 204: { description: 'No Content' } } } },
   },
-
-  // -------------------- COMPONENTS --------------------
   components: {
     schemas: {
       ...AuthSchema,
-      PhongChieuRequest: {
-        type: 'object',
-        properties: {
-          rap_id: { type: 'integer' },
-          ten_phong: { type: 'string' },
-          suc_chua: { type: 'integer' },
-        },
-        required: ['rap_id', 'ten_phong', 'suc_chua'],
-      },
-      PhimRequest: {
-        type: 'object',
-        properties: {
-          title: { type: 'string' },
-          description: { type: 'string' },
-          duration: { type: 'integer' },
-          director: { type: 'string' },
-          producer: { type: 'string' },
-          release_date: { type: 'string', format: 'date' },
-          poster_url: { type: 'string' },
-          trailer_url: { type: 'string' },
-        },
-        required: ['title', 'duration'],
-      },
-      SuatChieuRequest: {
-        type: 'object',
-        properties: {
-          phim_id: { type: 'integer' },
-          phong_chieu_id: { type: 'integer' },
-          ca_chieu_id: { type: 'integer' },
-          ngay_chieu: { type: 'string', format: 'date' },
-          base_price: { type: 'number' },
-        },
-        required: ['phim_id', 'phong_chieu_id', 'ca_chieu_id', 'ngay_chieu', 'base_price'],
-      },
-      DatVeRequest: {
-        type: 'object',
-        properties: {
-          khach_hang_id: { type: 'integer' },
-          tong_tien: { type: 'number' },
-          trang_thai_Dat_Ve: { type: 'string' },
-          tickets: {
-            type: 'array',
-            items: { $ref: '#/components/schemas/TicketItem' },
-          },
-        },
-        required: ['khach_hang_id', 'tong_tien', 'tickets'],
-      },
-      DatVeResponse: {
-        type: 'object',
-        properties: {
-          Dat_Ve_id: { type: 'integer' },
-          khach_hang_id: { type: 'integer' },
-          tong_tien: { type: 'number' },
-          trang_thai_Dat_Ve: { type: 'string' },
-        },
-      },
-      TicketItem: {
-        type: 'object',
-        properties: {
-          ghe_id: { type: 'integer' },
-          suat_chieu_id: { type: 'integer' },
-          gia_ve: { type: 'number' },
-        },
-      },
+      ...DomainSchema,
     },
     securitySchemes: {
       bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
@@ -344,3 +93,4 @@ const swaggerDocument = {
 };
 
 export default swaggerDocument;
+

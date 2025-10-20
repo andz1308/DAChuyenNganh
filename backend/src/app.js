@@ -58,5 +58,6 @@ const start = async () => {
 start();
 
 app.use('/api-docs/', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }));
+app.get('/openapi.json', (req, res) => res.json(swaggerDocument));
 
 app.use('/api', rootRouter);
