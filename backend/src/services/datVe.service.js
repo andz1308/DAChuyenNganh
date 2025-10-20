@@ -1,8 +1,6 @@
 import { getModels } from '../models/index.js';
 import { getSequelize } from '../config/mysql.js';
 
-const { DatVe, Ve, SeatHold, KhuyenMai } = getModels();
-
 /**
  * Assumptions:
  * - payload contains `tickets` array: [{ ghe_id, suat_chieu_id, gia_ve }]
@@ -13,6 +11,7 @@ const create = async (payload) => {
   if (!sequelize) throw new Error('Sequelize not initialized');
 
   return await sequelize.transaction(async (t) => {
+    const { DatVe, Ve, SeatHold, KhuyenMai } = getModels();
     const { tickets = [], ma_giam_gia_id } = payload;
 
     // create DatVe
@@ -52,11 +51,18 @@ const create = async (payload) => {
   });
 };
 
-const list = async (query = {}) => DatVe.findAll({ where: query });
+const list = async (query = {}) => {
+  const { DatVe } = getModels();
+  return DatVe.findAll({ where: query });
+};
 
-const getById = async (id) => DatVe.findByPk(id);
+const getById = async (id) => {
+  const { DatVe } = getModels();
+  return DatVe.findByPk(id);
+};
 
 const update = async (id, payload) => {
+  const { DatVe } = getModels();
   const d = await DatVe.findByPk(id);
   if (!d) return null;
   await d.update(payload);
@@ -64,6 +70,7 @@ const update = async (id, payload) => {
 };
 
 const remove = async (id) => {
+  const { DatVe } = getModels();
   const d = await DatVe.findByPk(id);
   if (!d) return false;
   await d.destroy();

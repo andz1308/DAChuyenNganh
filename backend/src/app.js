@@ -48,7 +48,7 @@ const start = async () => {
         await sequelize.sync();
     }
 
-    seedAdminUser();
+    await seedAdminUser();
 
     server.listen(env.PORT, () => {
         console.log(`🚀 Server is running on port: ${env.PORT}`);

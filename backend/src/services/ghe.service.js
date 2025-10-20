@@ -1,17 +1,19 @@
 import { getModels } from '../models/index.js';
-const { Ghe } = getModels();
 
 const create = async (payload) => {
+  const { Ghe } = getModels();
   return Ghe.create(payload);
 };
 
 const list = async (query = {}) => {
+  const { Ghe } = getModels();
   return Ghe.findAll({ where: query });
 };
 
-const getById = async (id) => Ghe.findByPk(id);
+const getById = async (id) => { const { Ghe } = getModels(); return Ghe.findByPk(id); };
 
 const update = async (id, payload) => {
+  const { Ghe } = getModels();
   const item = await Ghe.findByPk(id);
   if (!item) return null;
   await item.update(payload);
@@ -19,6 +21,7 @@ const update = async (id, payload) => {
 };
 
 const remove = async (id) => {
+  const { Ghe } = getModels();
   const item = await Ghe.findByPk(id);
   if (!item) return false;
   await item.destroy();

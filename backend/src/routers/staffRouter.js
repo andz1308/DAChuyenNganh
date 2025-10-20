@@ -1,6 +1,6 @@
 import express from 'express';
 import staffController from '../controllers/staff.controller.js';
-import validate from '../middlewares/validate.middleware.js';
+import { validate } from '../middlewares/validate.middleware.js';
 import { createStaffSchema } from '../validations/staff.validation.js';
 import { toStaffDto, toStaffListDto } from '../mappers/staff.mapper.js';
 

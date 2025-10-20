@@ -1,6 +1,6 @@
 import express from 'express';
 import seatHoldController from '../controllers/seatHold.controller.js';
-import validate from '../middlewares/validate.middleware.js';
+import { validate } from '../middlewares/validate.middleware.js';
 import { createSeatHoldSchema } from '../validations/seatHold.validation.js';
 
 const router = express.Router();

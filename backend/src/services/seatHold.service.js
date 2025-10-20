@@ -1,8 +1,8 @@
 import { getModels } from '../models/index.js';
-const { SeatHold, Ve } = getModels();
 
 // Create a seat hold if seat is not already sold or held
 const create = async (payload) => {
+  const { SeatHold, Ve } = getModels();
   const existingHold = await SeatHold.findOne({ where: { suat_chieu_id: payload.suat_chieu_id, ghe_id: payload.ghe_id, status: 'ACTIVE' } });
   if (existingHold) throw new Error('Seat already held');
 
@@ -14,11 +14,12 @@ const create = async (payload) => {
   return sh;
 };
 
-const list = async (query = {}) => SeatHold.findAll({ where: query });
+const list = async (query = {}) => { const { SeatHold } = getModels(); return SeatHold.findAll({ where: query }); };
 
-const getById = async (id) => SeatHold.findByPk(id);
+const getById = async (id) => { const { SeatHold } = getModels(); return SeatHold.findByPk(id); };
 
 const release = async (id) => {
+  const { SeatHold } = getModels();
   const sh = await SeatHold.findByPk(id);
   if (!sh) return null;
   sh.status = 'RELEASED';
